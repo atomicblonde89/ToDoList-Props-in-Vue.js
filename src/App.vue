@@ -1,19 +1,45 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container">
+      <form v-on:submit.prevent="ingresarTarea">
+        <p>Tarea: <input type="text" v-model="nombre" placeholder="Ingresa nueva tarea"/></p>
+        <b-button pill variant="outline-dark" type="submit" >Añadir</b-button>
+      </form>
+      <br>
+        <h2>Lista de Tareas: </h2>
+       <childComponent :tareas="this.tareas" @deleteItem="deleteItem" />
+     
+    </div> 
+  
   </div>
+ 
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import childComponent from "./components/childComponent.vue"
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    childComponent,
+  },
+  data() {
+    return {
+      nombre: "",
+      tareas: [],
+    };
+  },
+  methods: {
+    ingresarTarea: function () {
+      this.tareas.push({
+        nombre: this.nombre,
+      });
+      this.nombre = "";
+    },
+    deleteItem: function(index){
+        this.tareas.splice(index,1)
+    }
+  },
+};
 </script>
 
 <style>
@@ -24,5 +50,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  
 }
 </style>
+
